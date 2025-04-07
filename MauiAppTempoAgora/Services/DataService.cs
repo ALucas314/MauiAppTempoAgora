@@ -1,7 +1,4 @@
-﻿using System;
-using System.Net.Http;
-using System.Threading.Tasks;
-using MauiAppTempoAgora.Models;
+﻿using MauiAppTempoAgora.Models;
 using Newtonsoft.Json.Linq;
 
 namespace MauiAppTempoAgora.Services
@@ -12,8 +9,7 @@ namespace MauiAppTempoAgora.Services
         {
             Tempo? t = null;
             string chave = "4c683af059ebcd0b4f121b980bf2514a";
-            string url = $"https://api.openweathermap.org/data/2.5/weather?" +
-                         $"q={cidade}&units=metric&appid={chave}";
+            string url = $"https://api.openweathermap.org/data/2.5/weather?q={cidade}&units=metric&appid={chave}";
 
             try
             {
@@ -26,7 +22,7 @@ namespace MauiAppTempoAgora.Services
                         throw new Exception("Cidade não encontrada.");
                     }
 
-                    resp.EnsureSuccessStatusCode(); // Lança exceção se status for erro
+                    resp.EnsureSuccessStatusCode();
 
                     string json = await resp.Content.ReadAsStringAsync();
                     var rascunho = JObject.Parse(json);
@@ -39,14 +35,14 @@ namespace MauiAppTempoAgora.Services
                     {
                         lat = (double)rascunho["coord"]["lat"],
                         lon = (double)rascunho["coord"]["lon"],
-                        description = (string)rascunho["weather"][0]["description"],
+                        description = TradutorClima.Traduzir((string)rascunho["weather"][0]["description"]),
                         main = (string)rascunho["weather"][0]["main"],
                         temp_min = (double)rascunho["main"]["temp_min"],
                         temp_max = (double)rascunho["main"]["temp_max"],
                         speed = (double)rascunho["wind"]["speed"],
                         visibility = (int)rascunho["visibility"],
-                        sunrise = sunrise.ToString(),
-                        sunset = sunset.ToString(),
+                        sunrise = sunrise.ToString("HH:mm"),
+                        sunset = sunset.ToString("HH:mm"),
                     };
                 }
             }
@@ -56,6 +52,31 @@ namespace MauiAppTempoAgora.Services
             }
 
             return t;
+        }
+    }
+
+    // TradutorClima embutido aqui mesmo
+    public static class TradutorClima
+    {
+        private static readonly Dictionary<string, string> traducoes = new()
+        {
+            {"clear sky", "céu limpo"},
+            {"few clouds", "poucas nuvens"},
+            {"scattered clouds", "nuvens dispersas"},
+            {"broken clouds", "nuvens fragmentadas"},
+            {"shower rain", "chuva forte"},
+            {"rain", "chuva"},
+            {"thunderstorm", "trovoada"},
+            {"snow", "neve"},
+            {"mist", "névoa"},
+            {"overcast clouds", "nublado"},
+        };
+
+        public static string Traduzir(string descricao)
+        {
+            return traducoes.TryGetValue(descricao.ToLower(), out var traducao)
+                ? traducao
+                : descricao;
         }
     }
 }

@@ -22,32 +22,34 @@ namespace MauiAppTempoAgora
 
                     if (t != null)
                     {
-                        string dados_previsao = $"Latitude: {t.lat}\n" +
-                                                $"Longitude: {t.lon}\n" +
-                                                $"Nascer do Sol: {t.sunrise}\n" +
-                                                $"Por do Sol: {t.sunset}\n" +
-                                                $"Temp Máx: {t.temp_max}°C\n" +
-                                                $"Temp Mín: {t.temp_min}°C\n" +
-                                                $"Descrição: {t.description}\n" +
-                                                $"Vento: {t.speed} m/s\n" +
-                                                $"Visibilidade: {t.visibility} metros";
+                        lbl_main.Text = $"☁️ {t.description}";
+                        lbl_temp_max.Text = $"🌡️ Máx: {t.temp_max}°C";
+                        lbl_temp_min.Text = $"🌡️ Mín: {t.temp_min}°C";
+                        lbl_wind.Text = $"💨 Vento: {t.speed} m/s";
+                        lbl_visibility.Text = $"👀 Visibilidade: {t.visibility} m";
+                        lbl_sunrise.Text = $"🌅 Nascer: {t.sunrise}";
+                        lbl_sunset.Text = $"🌇 Pôr: {t.sunset}";
+                        lbl_coords.Text = $"📍 Lat: {t.lat} | Lon: {t.lon}";
 
-                        lbl_res.Text = dados_previsao;
+                        res_frame.IsVisible = true;
+                        chart_frame.IsVisible = true; // quando você adicionar gráficos
                     }
                     else
                     {
-                        lbl_res.Text = "Sem dados de previsão.";
+                        await DisplayAlert("Aviso", "Dados não encontrados.", "OK");
                     }
                 }
                 else
                 {
-                    lbl_res.Text = "Preencha a cidade.";
+                    await DisplayAlert("Aviso", "Digite uma cidade.", "OK");
                 }
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Ops", ex.Message, "OK");
+                await DisplayAlert("Erro", ex.Message, "OK");
             }
         }
     }
 }
+
+

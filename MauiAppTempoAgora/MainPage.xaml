@@ -1,19 +1,198 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MauiAppTempoAgora.MainPage">
+             x:Class="MauiAppTempoAgora.MainPage"
+             BackgroundColor="#f5f7fa"
+             Title="Tempo Agora - Dashboard">
 
     <ScrollView>
-        <VerticalStackLayout
-            Padding="30,0"
-            Spacing="25">
+        <VerticalStackLayout Padding="20" Spacing="30">
 
-            <Entry x:Name="txt_cidade" />
-            <Button Text="Buscar" Clicked="Button_Clicked" />
+            <!-- Título -->
+            <Label Text="🌤️ Painel do Tempo Atual"
+                   FontSize="36"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   TextColor="#1e293b" />
 
-            <Label x:Name="lbl_res" />
-            
+            <!-- Campo de busca -->
+            <Frame BackgroundColor="White"
+                   CornerRadius="15"
+                   Padding="12"
+                   BorderColor="#cbd5e1"
+                   HasShadow="True">
+                <HorizontalStackLayout>
+                    <Entry x:Name="txt_cidade"
+                           Placeholder="Digite a cidade..."
+                           FontSize="16"
+                           BackgroundColor="Transparent"
+                           TextColor="#0f172a"
+                           HorizontalOptions="FillAndExpand" />
+                    <ImageButton Source="search.png"
+                                 Clicked="Button_Clicked"
+                                 BackgroundColor="Transparent"
+                                 WidthRequest="28"
+                                 HeightRequest="28"
+                                 Margin="8,0,0,0" />
+                </HorizontalStackLayout>
+            </Frame>
+
+            <!-- Botão customizado -->
+            <Button Text="Buscar Clima"
+                    Clicked="Button_Clicked"
+                    BackgroundColor="#2563eb"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    FontSize="18"
+                    CornerRadius="12"
+                    HeightRequest="50"
+                    HorizontalOptions="FillAndExpand" />
+
+            <!-- Card principal -->
+            <Frame BackgroundColor="White"
+                   CornerRadius="25"
+                   Padding="20"
+                   HasShadow="True"
+                   IsVisible="False"
+                   x:Name="res_frame">
+
+                <VerticalStackLayout Spacing="20">
+
+                    <!-- Local e condição -->
+                    <Label x:Name="lbl_main"
+                           FontSize="26"
+                           FontAttributes="Bold"
+                           TextColor="#0284c7"
+                           HorizontalOptions="Center" />
+
+                    <!-- Cards com métricas -->
+                    <Grid ColumnDefinitions="*,*"
+                          RowDefinitions="Auto,Auto"
+                          ColumnSpacing="15"
+                          RowSpacing="15">
+
+                        <!-- Temperatura Máxima -->
+                        <Frame BackgroundColor="#fffbeb"
+                               CornerRadius="20"
+                               Padding="15"
+                               HasShadow="True"
+                               Grid.Column="0"
+                               Grid.Row="0">
+                            <VerticalStackLayout>
+                                <Label Text="🌡️ Máxima"
+                                       FontAttributes="Bold"
+                                       FontSize="16"
+                                       TextColor="#92400e"/>
+                                <Label x:Name="lbl_temp_max"
+                                       FontSize="22"
+                                       TextColor="#ca8a04" />
+                            </VerticalStackLayout>
+                        </Frame>
+
+                        <!-- Temperatura Mínima -->
+                        <Frame BackgroundColor="#eff6ff"
+                               CornerRadius="20"
+                               Padding="15"
+                               HasShadow="True"
+                               Grid.Column="1"
+                               Grid.Row="0">
+                            <VerticalStackLayout>
+                                <Label Text="🌡️ Mínima"
+                                       FontAttributes="Bold"
+                                       FontSize="16"
+                                       TextColor="#1e3a8a"/>
+                                <Label x:Name="lbl_temp_min"
+                                       FontSize="22"
+                                       TextColor="#2563eb" />
+                            </VerticalStackLayout>
+                        </Frame>
+
+                        <!-- Vento -->
+                        <Frame BackgroundColor="#ecfdf5"
+                               CornerRadius="20"
+                               Padding="15"
+                               HasShadow="True"
+                               Grid.Column="0"
+                               Grid.Row="1">
+                            <VerticalStackLayout>
+                                <Label Text="🌬️ Vento"
+                                       FontAttributes="Bold"
+                                       FontSize="16"
+                                       TextColor="#047857"/>
+                                <Label x:Name="lbl_wind"
+                                       FontSize="20"
+                                       TextColor="#0f766e" />
+                            </VerticalStackLayout>
+                        </Frame>
+
+                        <!-- Visibilidade -->
+                        <Frame BackgroundColor="#fef2f2"
+                               CornerRadius="20"
+                               Padding="15"
+                               HasShadow="True"
+                               Grid.Column="1"
+                               Grid.Row="1">
+                            <VerticalStackLayout>
+                                <Label Text="👁️ Visibilidade"
+                                       FontAttributes="Bold"
+                                       FontSize="16"
+                                       TextColor="#b91c1c"/>
+                                <Label x:Name="lbl_visibility"
+                                       FontSize="20"
+                                       TextColor="#dc2626" />
+                            </VerticalStackLayout>
+                        </Frame>
+                    </Grid>
+
+                    <!-- Nascer e Pôr do Sol -->
+                    <HorizontalStackLayout Spacing="20" HorizontalOptions="Center">
+                        <VerticalStackLayout>
+                            <Label Text="🌅 Nascer do sol"
+                                   FontAttributes="Bold"
+                                   FontSize="14"
+                                   TextColor="#f59e0b"
+                                   HorizontalTextAlignment="Center"/>
+                            <Label x:Name="lbl_sunrise"
+                                   FontSize="16"
+                                   TextColor="#ea580c"
+                                   HorizontalTextAlignment="Center" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout>
+                            <Label Text="🌇 Pôr do sol"
+                                   FontAttributes="Bold"
+                                   FontSize="14"
+                                   TextColor="#c2410c"
+                                   HorizontalTextAlignment="Center"/>
+                            <Label x:Name="lbl_sunset"
+                                   FontSize="16"
+                                   TextColor="#ea580c"
+                                   HorizontalTextAlignment="Center"/>
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
+
+                    <!-- Coordenadas -->
+                    <Label x:Name="lbl_coords"
+                           FontSize="13"
+                           TextColor="#64748b"
+                           HorizontalOptions="Center" />
+
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Placeholder para gráficos -->
+            <Frame x:Name="chart_frame"
+                   BackgroundColor="White"
+                   CornerRadius="20"
+                   Padding="20"
+                   HasShadow="True"
+                   IsVisible="False">
+                <Label Text="📊 Em breve: gráfico com a variação climática"
+                       TextColor="#475569"
+                       FontAttributes="Italic"
+                       HorizontalOptions="Center" />
+            </Frame>
+
         </VerticalStackLayout>
     </ScrollView>
-
 </ContentPage>
